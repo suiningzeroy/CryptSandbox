@@ -9,31 +9,51 @@ public class DeffieHellmanKeysExchange {
 	 */
 	public static void main(String[] args){
 		
-		BigInteger OpenNumberforAlice = BigInteger.ZERO; 
-		BigInteger OpenNumberforBob = BigInteger.ZERO; 
-		BigInteger RandomforAlice = BigInteger.ZERO; 
-		BigInteger RandomforBob =  BigInteger.ZERO; 
-		BigInteger PrimeNmber =  BigInteger.ZERO; 
-		BigInteger OpenG =  BigInteger.ZERO; 
-		BigInteger ExchangeForAlice = BigInteger.ZERO; 
-		BigInteger ExchangeForBob = BigInteger.ZERO; 
+		BigInteger openNumberforAlice = BigInteger.ZERO; 
+		BigInteger openNumberforBob = BigInteger.ZERO; 
+		BigInteger randomforAlice = BigInteger.ZERO; 
+		BigInteger randomforBob =  BigInteger.ZERO; 
+		BigInteger primeNmber =  BigInteger.ZERO; 
+		BigInteger openG =  BigInteger.ZERO; 
+		BigInteger exchangeForAlice = BigInteger.ZERO; 
+		BigInteger exchangeForBob = BigInteger.ZERO; 
 		
 		
-		RandomforAlice = DeffieHellman_RandomGenerate();
-		RandomforBob =   DeffieHellman_RandomGenerate();
-		OpenG        =   DeffieHellman_RandomGenerate();
-		PrimeNmber = DeffieHellman_PrimerGenerate();
 		
-		OpenNumberforAlice =  DeffieHellman_OpenNumberCompute(RandomforAlice,OpenG,PrimeNmber);
-		OpenNumberforBob   =  DeffieHellman_OpenNumberCompute(RandomforBob,OpenG,PrimeNmber);
+		System.out.println("The  Dillie-Hellman :");
+		randomforAlice = generateDiffieHellman_Random();
+		randomforBob =   generateDiffieHellman_Random();
+		openG        =   generateDiffieHellman_Random();
+		primeNmber = generateDiffieHellman_prime();
 		
-		System.out.println("RandomforAlice:" + RandomforAlice + ";RandomforBob:" + RandomforBob+ ";OpenG:" + OpenG+";PrimeNmber:" + PrimeNmber);
-		System.out.println("OpenNumberforAlice:" + OpenNumberforAlice + ";OpenNumberforBob:"+OpenNumberforBob);
+		openNumberforAlice =  computeDiffieHellman_openNumber(randomforAlice,openG,primeNmber);
+		openNumberforBob   =  computeDiffieHellman_openNumber(randomforBob,openG,primeNmber);
 		
-		ExchangeForAlice = DeffieHellman_exchageCompute(RandomforAlice,OpenNumberforBob,PrimeNmber);
-		ExchangeForBob = DeffieHellman_exchageCompute(RandomforBob,OpenNumberforAlice,PrimeNmber);
+		System.out.println("randomforAlice:" + randomforAlice + ";randomforBob:" + randomforBob+ ";openG:" + openG+";primeNmber:" + primeNmber);
+		System.out.println("openNumberforAlice:" + openNumberforAlice + ";openNumberforBob:"+openNumberforBob);
 		
-		System.out.println("ExchangeForAlice:" + ExchangeForAlice + ";ExchangeForBob:" + ExchangeForBob);
+		exchangeForAlice = computeDiffieHellman_exchangeKey(randomforAlice,openNumberforBob,primeNmber);
+		exchangeForBob = computeDiffieHellman_exchangeKey(randomforBob,openNumberforAlice,primeNmber);
+		
+		System.out.println("exchangeForAlice:" + exchangeForAlice + ";exchangeForBob:" + exchangeForBob);
+		
+		System.out.println("The variant of Dillie-Hellman :");
+		
+		exchangeForAlice = computeDiffieHellman_exchangeKey(randomforAlice,openG,primeNmber);
+		openNumberforBob   =  computeDiffieHellman_openNumber(randomforBob,openG,primeNmber);
+		openNumberforAlice =  computeDiffieHellman_openNumber(randomforAlice,openNumberforBob,primeNmber);
+
+		
+        BigInteger randomforBobpow = new BigInteger("1").divide(randomforBob);
+        System.out.println("randomforBob" + randomforBob + ";randomforBobpow:" + randomforBobpow + "QQQQ:" + randomforAlice.divide(randomforBob));
+		
+		exchangeForBob = computeDiffieHellman_exchangeKey(randomforAlice.divide(randomforBob),openNumberforBob,primeNmber);
+		
+		System.out.println("randomforAlice:" + randomforAlice + ";randomforBob:" + randomforBob+ ";openG:" + openG+";primeNmber:" + primeNmber);
+		System.out.println("exchangeForAlice:" + exchangeForAlice);	
+		System.out.println("openNumberforAlice:" + openNumberforAlice + ";openNumberforBob:"+openNumberforBob);
+		System.out.println("exchangeForBob:" + exchangeForBob);
+		
 		
 		
 		System.out.println("end");
@@ -42,40 +62,42 @@ public class DeffieHellmanKeysExchange {
 	
 	};
 	
-	private static BigInteger DeffieHellman_exchageCompute(BigInteger RandomA,BigInteger OpenNum,BigInteger PrimerNum)
+	private static BigInteger computeDiffieHellman_exchangeKey(BigInteger randomA,BigInteger openNum,BigInteger primeNum)
 	{
-		BigInteger ExchangeKey = BigInteger.ZERO; 
+		BigInteger exchangeKey = BigInteger.ZERO; 
 		
-		ExchangeKey = OpenNum.modPow(RandomA,PrimerNum);	
+		exchangeKey = openNum.modPow(randomA,primeNum);	
 		
-		return ExchangeKey;
+		return exchangeKey;
 	};
 	
-	private static BigInteger DeffieHellman_OpenNumberCompute(BigInteger RandomA,BigInteger GroudNum,BigInteger PrimerNum)
+	
+	private static BigInteger computeDiffieHellman_openNumber(BigInteger randomA,BigInteger groudNum,BigInteger primeNum)
 	{
-		BigInteger OpenKEY = BigInteger.ZERO;
-		OpenKEY = GroudNum.modPow(RandomA,PrimerNum);	
-		return OpenKEY;
+		BigInteger openKey = BigInteger.ZERO;
+		openKey = groudNum.modPow(randomA,primeNum);	
+		return openKey;
 	};
 	
-	private static BigInteger DeffieHellman_RandomGenerate()
+	private static BigInteger generateDiffieHellman_Random()
 	{
-		int BitlengthofRandomNumber = 100;
-		BigInteger Minrandom = new BigInteger("100");
+		int bitlengthofRandomNumber = 10;
+		BigInteger minRandom = new BigInteger("100");
 		Random RDM = new java.util.Random();
-		BigInteger RandomNum = new BigInteger(BitlengthofRandomNumber,10,RDM);
-		RandomNum =RandomNum.add(Minrandom);
+		BigInteger RandomNum = new BigInteger(bitlengthofRandomNumber,10,RDM);
+		RandomNum =RandomNum.add(minRandom);
 		return RandomNum;
 	};
 	
-	private static BigInteger DeffieHellman_PrimerGenerate()
+	private static BigInteger generateDiffieHellman_prime()
 	{
-		int BitlengthofPrimeNumber = 10;
-		Random RDM = new java.util.Random();
-		BigInteger	PrimeNum = new BigInteger(BitlengthofPrimeNumber,10,RDM);	
-		PrimeNum = PrimeNum.nextProbablePrime();
-		return PrimeNum;
+		int bitlengthofRandomNumber = 10;
+		Random rdm = new java.util.Random();
+		BigInteger	primeNum = new BigInteger(bitlengthofRandomNumber,10,rdm);	
+		primeNum = primeNum.nextProbablePrime();
+		return primeNum;
 	};
+
 	
 	
 }
