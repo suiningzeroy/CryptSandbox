@@ -8,9 +8,9 @@ public class DiffieHellmanKeysExchange {
 	public static BigInteger publicRandomPrimeNumbern =  BigInteger.ZERO; 
 	public static BigInteger publicRandomg =  BigInteger.ZERO; 
 	
-	static int BITLENGTHOFRANDOMNUMBER = 30;
-	static int BITLENGTHOFNUMBERG = 7;
-	static BigInteger MINRANDOM = new BigInteger("100"); 
+	static int BIT_LENGTH_OF_RANDOM_NUMBER = 30;
+	static int BIT_LENGTH_OF_NUMBER_G = 7;
+	static BigInteger MIN_RANDOM = new BigInteger("100"); 
 
 	/**
 	 * @param args
@@ -40,8 +40,8 @@ public class DiffieHellmanKeysExchange {
 	
 	private static void generatepublicNumber()
 	{		
-		publicRandomPrimeNumbern = generateDiffieHellmanprime(BITLENGTHOFRANDOMNUMBER);
-        publicRandomg =   generateDiffieHellmanNumberg(BITLENGTHOFNUMBERG,publicRandomPrimeNumbern);
+		publicRandomPrimeNumbern = generateDiffieHellmanprime(BIT_LENGTH_OF_RANDOM_NUMBER);
+        publicRandomg =   generateDiffieHellmanNumberg(BIT_LENGTH_OF_NUMBER_G,publicRandomPrimeNumbern);
         
         System.out.println("publicRandomprimeNumbern:" + publicRandomPrimeNumbern);
         System.out.println("publicRandomg:" + publicRandomg);
@@ -57,7 +57,7 @@ public class DiffieHellmanKeysExchange {
 	private static void generatePrivateNumber(UserWantToExchange a){
 	   BigInteger randomNumberx = BigInteger.ZERO;
 	   
-	   randomNumberx =   generateDiffieHellmanRandom(BITLENGTHOFRANDOMNUMBER,MINRANDOM);
+	   randomNumberx =   generateDiffieHellmanRandom(BIT_LENGTH_OF_RANDOM_NUMBER,MIN_RANDOM);
        a.setrandomNumber(randomNumberx);
        System.out.println("randomNumberx:" + randomNumberx);
 
