@@ -20,24 +20,22 @@ public class EncryptionCommunication {
 	return message;	    
   } 
 	  
-  public BigInteger [] splitMessageIntoBlocks(BigInteger message){
+  public BigInteger [] splitMessageIntoBlocks(BigInteger message){	  
+    BigInteger[] blocks = new BigInteger[NUMBER_OF_BLOCKS_THE_MESSAGES_WAS_SPLITTED];
 	  
-	BigInteger[] blocks = new BigInteger[NUMBER_OF_BLOCKS_THE_MESSAGES_WAS_SPLITTED];
-	  
-	int i ;
-	for(i = 0 ; i < NUMBER_OF_BLOCKS_THE_MESSAGES_WAS_SPLITTED ; i ++)
-	{
+    int i ;
+    for(i = 0 ; i < NUMBER_OF_BLOCKS_THE_MESSAGES_WAS_SPLITTED ; i ++){
 	  blocks[i] = BigInteger.ZERO; 
-	}
-	return blocks;	  
+    }
+    return blocks;	  
   }
 	   
   public BigInteger encryptAlgorithm(BigInteger message, Rsa rsa){ 
-		//  c = m^e mod n
-    BigInteger outputNumber = BigInteger.ZERO;  
+    //  c = m^e mod n
+	BigInteger outputNumber = BigInteger.ZERO;  
     
     outputNumber = message.pow(rsa.publicKeyE.intValue()).mod(rsa.publicKeyN);    
-	return outputNumber;	  
+    return outputNumber;	  
   } 
 	  
   public BigInteger decryptMessage (BigInteger m, Rsa rsa){ 	  
@@ -57,7 +55,7 @@ public class EncryptionCommunication {
     BigInteger outputNumber = BigInteger.ZERO;  
     outputNumber = m.pow(rsa.privateKeyD.intValue()).mod(rsa.publicKeyN);
       
-	return outputNumber;	  	  
+    return outputNumber;	  	  
   } 
 		 
 }
