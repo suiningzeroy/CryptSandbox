@@ -17,7 +17,7 @@ public class EncryptionCommunication {
   
   public static BigInteger encryptMessage(BigInteger message){ 	  
 	  
-		return message;	    
+	return message;	    
   } 
 	  
   public BigInteger [] splitMessageIntoBlocks(BigInteger message){
