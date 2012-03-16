@@ -3,9 +3,9 @@ package cryptography;
 import java.math.BigInteger;
 import java.util.*;
 
-public class Rsa {		
+public class Rsa {
   public static int BIT_LENGTH_OF_RANDOM_NUMBER = 20;
-	
+
   public BigInteger primeP = BigInteger.ZERO; 
   public BigInteger primeQ = BigInteger.ZERO; 
   public BigInteger publicKeyN = BigInteger.ZERO;  
@@ -14,10 +14,10 @@ public class Rsa {
   
   public Rsa(){
     this.setPrimeP(this.BIT_LENGTH_OF_RANDOM_NUMBER);
-	this.setPrimeQ(this.BIT_LENGTH_OF_RANDOM_NUMBER);
-	this.setPublicKeyN();
-	this.setPublicKeyE();
-	this.setPrivateKeyD();	    
+    this.setPrimeQ(this.BIT_LENGTH_OF_RANDOM_NUMBER);
+    this.setPublicKeyN();
+    this.setPublicKeyE();
+    this.setPrivateKeyD();
   }
   
   public  void testRsa(){ 
@@ -29,22 +29,22 @@ public class Rsa {
   public void setPrimeP (int bitlengthofRandomNumber){
     primeP = this.generateLargePrime(BIT_LENGTH_OF_RANDOM_NUMBER);	 
   }
-  
+
   public void setPrimeQ(int bitlengthofRandomNumber){
     primeQ = this.generateLargePrime(BIT_LENGTH_OF_RANDOM_NUMBER);
   }
   
   public void setPublicKeyN (){	 
-	  // n =pq;
+    // n =pq;
     this.publicKeyN = this.primeP.multiply(this.primeQ);
   }
   
   public void setPublicKeyE (){
-	  //relatively prime to (p - 1)(q - 1)
+    //relatively prime to (p - 1)(q - 1)
     int BIT_LENGTH_OF_NUMBER_E = 10;
     BigInteger numberE = this.generateRandomNumber(BIT_LENGTH_OF_NUMBER_E);
     BigInteger NUMBERONE = new BigInteger("1");
-	
+
     do{
     	 numberE = this.generateRandomNumber(BIT_LENGTH_OF_NUMBER_E);
     }while(this.euclideanAlgorithm(numberE, this.primeP.subtract(NUMBERONE).multiply(this.primeQ.subtract(NUMBERONE))) == NUMBERONE);
@@ -84,13 +84,13 @@ public class Rsa {
 	  //d  e^-1 mod ((p - 1)(q - 1))
     BigInteger numberZ; //numberZ = (p - 1)(q - 1)
     BigInteger NUMBERONE = new BigInteger("1");
-		
+
     numberZ = this.primeP.subtract(NUMBERONE).multiply(primeQ.subtract(NUMBERONE));
     this.privateKeyD = this.extendedEuclideanAlgorithm(numberZ, this.publicKeyE);
   }
   
   public BigInteger extendedEuclideanAlgorithm(BigInteger bigNmberM,BigInteger bigNumberE){
-	BigInteger x1,x2,x3,y1,y2,y3,t1,t2,t3,q;
+    BigInteger x1,x2,x3,y1,y2,y3,t1,t2,t3,q;
     BigInteger inverseNumber = new BigInteger("0");
     BigInteger NUMBER_ZERO = new BigInteger("0");
     BigInteger NUMBER_ONE = new BigInteger("1");

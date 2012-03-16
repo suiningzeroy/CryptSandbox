@@ -17,37 +17,37 @@ public class EncryptionCommunication {
   
   public static BigInteger encryptMessage(BigInteger message){ 	  
 	  
-	return message;	    
+    return message;	    
   } 
 	  
   public BigInteger [] splitMessageIntoBlocks(BigInteger message){	  
     BigInteger[] blocks = new BigInteger[NUMBER_OF_BLOCKS_THE_MESSAGES_WAS_SPLITTED];
-	  
+
     int i ;
     for(i = 0 ; i < NUMBER_OF_BLOCKS_THE_MESSAGES_WAS_SPLITTED ; i ++){
-	  blocks[i] = BigInteger.ZERO; 
+      blocks[i] = BigInteger.ZERO; 
     }
     return blocks;	  
   }
 	   
   public BigInteger encryptAlgorithm(BigInteger message, Rsa rsa){ 
     //  c = m^e mod n
-	BigInteger outputNumber = BigInteger.ZERO;  
+    BigInteger outputNumber = BigInteger.ZERO;  
     
     outputNumber = message.pow(rsa.publicKeyE.intValue()).mod(rsa.publicKeyN);    
     return outputNumber;	  
   } 
 	  
   public BigInteger decryptMessage (BigInteger m, Rsa rsa){ 	  
-	BigInteger encrypedMessage = BigInteger.ZERO;  
-	
-	return encrypedMessage;	  
+    BigInteger encrypedMessage = BigInteger.ZERO;  
+
+    return encrypedMessage;	  
   } 
     
   private BigInteger recoverMessageFromBlocks(BigInteger[] inputBlocks){
-	BigInteger message = BigInteger.ZERO; 
+    BigInteger message = BigInteger.ZERO; 
 	  
-	return message;	  
+    return message;	  
   }
   
   public BigInteger decryptAlgorithm(BigInteger m, Rsa rsa ){ 	
