@@ -16,7 +16,7 @@ public class TestEncryptionCommunication {
   @Test
   public void testEncryptMessage() {		
     EncryptionCommunication ecomm = new EncryptionCommunication();
-    BigInteger testMessage = new BigInteger("688"); 
+    String testMessage ="6882326879666680032";
     BigInteger result = BigInteger.ZERO; 
     BigInteger expResult =  new BigInteger("688"); 
  	
@@ -24,29 +24,27 @@ public class TestEncryptionCommunication {
     assertEquals(expResult, result);		
   }
   
-  @Ignore
+  @SuppressWarnings("deprecation")
   @Test
   public void testSplitMessageIntoBlocks(){
     EncryptionCommunication ecomm = new EncryptionCommunication();
-    BigInteger testMessage = new BigInteger("123456789123456789"); 
-    BigInteger[] result = new BigInteger[ecomm.NUMBER_OF_BLOCKS_THE_MESSAGES_WAS_SPLITTED];
-    BigInteger[] expResult = new BigInteger[ecomm.NUMBER_OF_BLOCKS_THE_MESSAGES_WAS_SPLITTED];
- 	 		 
-    int i ;
-    for(i = 0 ; i < ecomm.NUMBER_OF_BLOCKS_THE_MESSAGES_WAS_SPLITTED ; i ++)
-    {
-       result[i] = BigInteger.ZERO; 
-    }
-   
-    int j ;
-    for(j = 0 ; j < ecomm.NUMBER_OF_BLOCKS_THE_MESSAGES_WAS_SPLITTED ; j ++){
-      expResult[j] = BigInteger.ZERO; 
-    }
- 	 
-    result = ecomm.splitMessageIntoBlocks(testMessage);		 
+    String testMessage ="6882326879666680032";
+    String[] result = new String[EncryptionCommunication.NUMBER_OF_BLOCKS_THE_MESSAGES_WAS_SPLITTED];
+    String[] expResult = new String[EncryptionCommunication.NUMBER_OF_BLOCKS_THE_MESSAGES_WAS_SPLITTED];
+
+    expResult[0] = "688";
+    expResult[1] = new String("232");
+    expResult[2] = new String("687");
+    expResult[3] = new String("966");
+    expResult[4] = new String("668");
+    expResult[5] = new String("003");
+    expResult[6] = new String("2");
+    
+    result = ecomm.splitMessageIntoBlocks(testMessage);
+
     assertEquals(expResult, result);			 		 
   }
- 
+
   @Test
   public void testDecryptAlgorithm(){
     BigInteger testMessage = new BigInteger("1570"); 
@@ -55,11 +53,11 @@ public class TestEncryptionCommunication {
     EncryptionCommunication ecomm = new EncryptionCommunication();
     Rsa rsa = new Rsa();
     rsa.testRsa();
-    System.out.println("n:" + rsa.publicKeyN);
-    System.out.println("e:" + rsa.publicKeyE);
-    System.out.println("d:" + rsa.privateKeyD);
-    System.out.println("testMessage:" + testMessage);
-    System.out.println("result:" + ecomm.decryptAlgorithm(testMessage, rsa));
+    //System.out.println("n:" + rsa.publicKeyN);
+    //System.out.println("e:" + rsa.publicKeyE);
+    //System.out.println("d:" + rsa.privateKeyD);
+    //System.out.println("testMessage:" + testMessage);
+    //System.out.println("result:" + ecomm.decryptAlgorithm(testMessage, rsa));
 
     assertEquals(expResult, ecomm.decryptAlgorithm(testMessage, rsa));
   }

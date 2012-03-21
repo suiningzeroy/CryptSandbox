@@ -5,19 +5,21 @@ import java.util.*;
 
 public class Rsa {
   public static int BIT_LENGTH_OF_RANDOM_NUMBER = 20;
+  public BigInteger NUMBER_ZERO = new BigInteger("0"); 
+  public BigInteger NUMBER_ONE = new BigInteger("1"); 
 
-  public BigInteger primeP = BigInteger.ZERO; 
-  public BigInteger primeQ = BigInteger.ZERO; 
+  public BigInteger primeP = BigInteger.ZERO;  
+  public BigInteger primeQ = BigInteger.ZERO;  
   public BigInteger publicKeyN = BigInteger.ZERO;  
   public BigInteger publicKeyE = BigInteger.ZERO;  
   public BigInteger privateKeyD = BigInteger.ZERO;  
   
   public Rsa(){
-    this.setPrimeP(this.BIT_LENGTH_OF_RANDOM_NUMBER);
-    this.setPrimeQ(this.BIT_LENGTH_OF_RANDOM_NUMBER);
-    this.setPublicKeyN();
-    this.setPublicKeyE();
-    this.setPrivateKeyD();
+    this.generatePrimeP(this.BIT_LENGTH_OF_RANDOM_NUMBER);
+    this.generatePrimeQ(this.BIT_LENGTH_OF_RANDOM_NUMBER);
+    this.generatePublicKeyN();
+    this.generatePublicKeyE();
+    this.generatePrivateKeyD();
   }
   
   public  void testRsa(){ 
@@ -26,43 +28,42 @@ public class Rsa {
     this.publicKeyE = new BigInteger("79"); 
   }
   
-  public void setPrimeP (int bitlengthofRandomNumber){
+  public void generatePrimeP (int bitlengthofRandomNumber){
     primeP = this.generateLargePrime(BIT_LENGTH_OF_RANDOM_NUMBER);	 
   }
 
-  public void setPrimeQ(int bitlengthofRandomNumber){
+  public void generatePrimeQ(int bitlengthofRandomNumber){
     primeQ = this.generateLargePrime(BIT_LENGTH_OF_RANDOM_NUMBER);
   }
   
-  public void setPublicKeyN (){	 
+  public void generatePublicKeyN (){	 
     // n =pq;
     this.publicKeyN = this.primeP.multiply(this.primeQ);
   }
   
-  public void setPublicKeyE (){
+  public void generatePublicKeyE (){
     //relatively prime to (p - 1)(q - 1)
     int BIT_LENGTH_OF_NUMBER_E = 10;
     BigInteger numberE = this.generateRandomNumber(BIT_LENGTH_OF_NUMBER_E);
     BigInteger NUMBERONE = new BigInteger("1");
 
     do{
-    	 numberE = this.generateRandomNumber(BIT_LENGTH_OF_NUMBER_E);
-    }while(this.euclideanAlgorithm(numberE, this.primeP.subtract(NUMBERONE).multiply(this.primeQ.subtract(NUMBERONE))) == NUMBERONE);
+      numberE = this.generateRandomNumber(BIT_LENGTH_OF_NUMBER_E);
+    }while(this.doEuclideanAlgorithm(numberE, this.primeP.subtract(NUMBERONE).multiply(this.primeQ.subtract(NUMBERONE))) == NUMBERONE);
 	
     this.publicKeyE = numberE;
   }
   
-  public BigInteger euclideanAlgorithm(BigInteger bigNmberA,BigInteger bigNumberB){	  
-    BigInteger k ;
+  public BigInteger doEuclideanAlgorithm(BigInteger bigNmberA,BigInteger bigNumberB){	  
+    BigInteger remainder ;
     BigInteger numberA =  bigNmberA;
     BigInteger numberB =  bigNumberB;
-    BigInteger numberZero = new BigInteger("0");
 	  
     do{		  
-	  k = numberA.remainder(numberB);
+      remainder = numberA.remainder(numberB);
       numberA = numberB;
-      numberB = k; 
-    }while(k.equals(numberZero) == false);
+      numberB = remainder; 
+    }while(remainder.equals(NUMBER_ZERO) == false);
     return numberA;	  
   }
   
@@ -80,46 +81,48 @@ public class Rsa {
     return RandomNumber;
   }
   
-  public void setPrivateKeyD (){
+  public void generatePrivateKeyD (){
 	  //d  e^-1 mod ((p - 1)(q - 1))
     BigInteger numberZ; //numberZ = (p - 1)(q - 1)
-    BigInteger NUMBERONE = new BigInteger("1");
 
-    numberZ = this.primeP.subtract(NUMBERONE).multiply(primeQ.subtract(NUMBERONE));
+    numberZ = this.primeP.subtract(NUMBER_ONE).multiply(primeQ.subtract(NUMBER_ONE));
     this.privateKeyD = this.extendedEuclideanAlgorithm(numberZ, this.publicKeyE);
   }
   
   public BigInteger extendedEuclideanAlgorithm(BigInteger bigNmberM,BigInteger bigNumberE){
-    BigInteger x1,x2,x3,y1,y2,y3,t1,t2,t3,q;
-    BigInteger inverseNumber = new BigInteger("0");
-    BigInteger NUMBER_ZERO = new BigInteger("0");
-    BigInteger NUMBER_ONE = new BigInteger("1");
-    boolean ff = true;
+    BigInteger firstOfNumberGroupOne,secondOfNumberGroupOne,thirdOfNumberGroupOne;
+    BigInteger firstOfNumberGroupTwo,secondOfNumberGroupTwo,thirdOfNumberGroupTwo;
+    BigInteger firstOfNumberGroupThree,secondNumberOfTestGroupThree,thirdOfNumberGroupThree;
+    BigInteger q;
+    BigInteger inverseNumber = NUMBER_ZERO;
+    boolean flagTrue = true;
 		  
-    x1 = y2 = new BigInteger("1");
-    x2 = y1 = new BigInteger("0");
-    x3 = (bigNmberM.compareTo(bigNumberE) == 1)?bigNmberM:bigNumberE;
-    y3 = (bigNmberM.compareTo(bigNumberE) == 1)?bigNumberE:bigNmberM;
+    firstOfNumberGroupOne = new BigInteger("1");
+    secondOfNumberGroupTwo = new BigInteger("1");
+    secondOfNumberGroupOne = new BigInteger("0");
+    firstOfNumberGroupTwo = new BigInteger("0");
+    thirdOfNumberGroupOne = (bigNmberM.compareTo(bigNumberE) == 1)?bigNmberM:bigNumberE;
+    thirdOfNumberGroupTwo = (bigNmberM.compareTo(bigNumberE) == 1)?bigNumberE:bigNmberM;
     
-    while( ff ){
-      if(y3.equals(NUMBER_ZERO)){
-        inverseNumber = x3; // gcd(bigNmberN,bigNmberE) != 1
+    while( flagTrue ){
+      if(thirdOfNumberGroupTwo.equals(NUMBER_ZERO)){
+        inverseNumber = thirdOfNumberGroupOne; // gcd(bigNmberN,bigNmberE) != 1
         break ;
       }
-      if(y3.equals(NUMBER_ONE)){
-        inverseNumber = y2; // gcd(bigNmberN,bigNmberE) == 1
+      if(thirdOfNumberGroupTwo.equals(NUMBER_ONE)){
+        inverseNumber = secondOfNumberGroupTwo; // gcd(bigNmberN,bigNmberE) == 1
         break ;
       }
-      q = x3.divide(y3);
-      t1 = x1.subtract(q.multiply(y1));
-      t2 = x2.subtract(q.multiply(y2));
-      t3 = x3.subtract(q.multiply(y3));
-      x1 = y1;
-      x2 = y2;
-      x3 = y3;
-      y1 = t1;
-      y2 = t2;
-      y3 = t3;
+      q = thirdOfNumberGroupOne.divide(thirdOfNumberGroupTwo);
+      firstOfNumberGroupThree = firstOfNumberGroupOne.subtract(q.multiply(firstOfNumberGroupTwo));
+      secondNumberOfTestGroupThree = secondOfNumberGroupOne.subtract(q.multiply(secondOfNumberGroupTwo));
+      thirdOfNumberGroupThree = thirdOfNumberGroupOne.subtract(q.multiply(thirdOfNumberGroupTwo));
+      firstOfNumberGroupOne = firstOfNumberGroupTwo;
+      secondOfNumberGroupOne = secondOfNumberGroupTwo;
+      thirdOfNumberGroupOne = thirdOfNumberGroupTwo;
+      firstOfNumberGroupTwo = firstOfNumberGroupThree;
+      secondOfNumberGroupTwo = secondNumberOfTestGroupThree;
+      thirdOfNumberGroupTwo = thirdOfNumberGroupThree;
     }
     return inverseNumber;
   }

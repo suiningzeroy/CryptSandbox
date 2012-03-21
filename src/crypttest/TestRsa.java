@@ -19,30 +19,30 @@ public class TestRsa {
   }
   
   @Test
-  public void testSetPublicKeyE(){
+  public void testGeneratePublicKeyE(){
     Rsa rsa = new Rsa();
-    rsa.setPrimeP(Rsa.BIT_LENGTH_OF_RANDOM_NUMBER);
-    rsa.setPrimeQ(Rsa.BIT_LENGTH_OF_RANDOM_NUMBER);
-    rsa.setPublicKeyN();
-    rsa.setPublicKeyE();
+    rsa.generatePrimeP(Rsa.BIT_LENGTH_OF_RANDOM_NUMBER);
+    rsa.generatePrimeQ(Rsa.BIT_LENGTH_OF_RANDOM_NUMBER);
+    rsa.generatePublicKeyN();
+    rsa.generatePublicKeyE();
     BigInteger NUMBERONE = new BigInteger("1");
 	
     assertTrue(rsa.publicKeyE.gcd(rsa.publicKeyN).equals(NUMBERONE));
   }
   
   @Test
-  public void testEuclideanAlgorithm(){
+  public void testDoEuclideanAlgorithm(){
     Rsa rsa = new Rsa();
     BigInteger bigNmberA = new BigInteger("2312455435345");
     BigInteger bigNumberB = new BigInteger("312315466756");
     BigInteger expResult = bigNmberA.gcd(bigNumberB);
 	
-    assertEquals(expResult,rsa.euclideanAlgorithm(bigNmberA, bigNumberB));  
+    assertEquals(expResult,rsa.doEuclideanAlgorithm(bigNmberA, bigNumberB));  
 	
   }
   
   @Test
-  public void testExtendedEuclideanAlgorithm()
+  public void testDoExtendedEuclideanAlgorithm()
   {
     Rsa rsa = new Rsa();
     BigInteger numberM =  new BigInteger("3220");
@@ -50,7 +50,7 @@ public class TestRsa {
     BigInteger result =  rsa.extendedEuclideanAlgorithm(numberM, numberE);
     BigInteger expResult =  new BigInteger("1019");
 	  
-    assertEquals(expResult,rsa.euclideanAlgorithm(expResult, result));  
+    assertEquals(expResult,rsa.doEuclideanAlgorithm(expResult, result));  
   }
   
 }
