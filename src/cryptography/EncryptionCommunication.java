@@ -1,121 +1,77 @@
 package cryptography;
 
-import static org.junit.Assert.assertEquals;
-
 import java.math.*;
+import cryptography.MessageForCommunicate;
 
-import cryptography.Rsa;
+import cryptography.RsaKeys;
 
 public class EncryptionCommunication {
-  public static int NUMBER_OF_BLOCKS_THE_MESSAGES_WAS_SPLITTED = 7;
-  public static int NUMBER_OF_BITS_PER_BLOCK = 3;
-  public static int BIT_LENGTH_OF_RANDOM_MESSAGE = 50;
-  public static int NumberOfBlocks ;
- 
+
   public static void main(String[] args){
-	  EncryptionCommunication ecomm = new EncryptionCommunication();
-	  String testMessage = new String("6882326879666680032");
-	  String[] result = new String[6];
-	  result = ecomm.splitMessageIntoBlocks(testMessage);
-  }
+    EncryptionCommunication ecomm = new EncryptionCommunication();
+    MessageForCommunicate MessageForEncrypt = new MessageForCommunicate("488262687");
+    MessageForCommunicate EncryptedMessage = new MessageForCommunicate(MessageForEncrypt.getNumberOfBlocks());
+    MessageForCommunicate DecryptedMessage = new MessageForCommunicate(MessageForEncrypt.getNumberOfBlocks());
+    RsaKeys rsa = new RsaKeys();
+    System.out.println("rsa-E:" + rsa.publicKeyE);
+    System.out.println("rsa-N:" + rsa.publicKeyN);
+    System.out.println("rsa-D:" + rsa.privateKeyD);
 
-  public static String[] encryptMessage(String message,Rsa rsa){ 	      
-    NumberOfBlocks =   generateNumberOfBlocks(message.length());
-    String [] blocks = new String[NumberOfBlocks];
-    BigInteger[] encryptedBlocks = new BigInteger[NumberOfBlocks];
-    
-    blocks = splitMessageIntoBlocks(message);
-    int i;
-    for(i = 0,i < NumberOfBlocks, i++)
-    {
-    	encryptedBlocks[i] = encryptBlocks(blocks[i],rsa);
-    }
-    
-    return splitedMessage;	    
-  } 
-  public static BigInteger encryptBlocks(String blocks, Rsa rsa)
-  {
-	  BigInteger outputNumber = decryptAlgorithm(blocks, rsa)
-  }
-public static String [] splitMessageIntoBlocks(String message){	  
-    int endOfMessage = message.length();
-    String stringGroup[] = new String[NumberOfBlocks];
-    long longGroup[] = new long[NumberOfBlocks];
-    BigInteger bigIntegerGroup[] = new BigInteger[NumberOfBlocks];
+    EncryptedMessage = EncryptionCommunication.encryptMessage(MessageForEncrypt,rsa);
+    DecryptedMessage = EncryptionCommunication.decryptMessage(EncryptedMessage, rsa);
 
-    int j = 0,startPoint;
-    for(j = 0; j < NumberOfBlocks ; j++){
-      startPoint = j*3;
-      if(j == NumberOfBlocks-1){
-        stringGroup[j] = cutoutBlocksFromMessage(startPoint,endOfMessage,message);
-        longGroup[j] = transformStringToLong(stringGroup[j]);
-        bigIntegerGroup[j] = transformLongToBigInteger(longGroup[j]);
+    System.out.println("MessageForEncrypt:"+ MessageForEncrypt.getMessage());
+    System.out.println("DecryptedMessage:"+ DecryptedMessage.getMessage());
+    if(MessageForEncrypt.getMessage().intern()==DecryptedMessage.getMessage().intern()){
+      System.out.println("Ok");
       }
-      else{
-        stringGroup[j] = cutoutBlocksFromMessage(startPoint, startPoint+3,message);
-        longGroup[j] = transformStringToLong(stringGroup[j]);
-        bigIntegerGroup[j] = transformLongToBigInteger(longGroup[j]);
-      }
-    }
-    return stringGroup;	  
-  }
-  public static int generateNumberOfBlocks(int lengthOfMessage)
-  {
-    int numberOfBlocks =lengthOfMessage / NUMBER_OF_BITS_PER_BLOCK;
-    int remainder = lengthOfMessage % NUMBER_OF_BITS_PER_BLOCK;
-    
-    if(remainder == 0){
-    }
     else{
-      numberOfBlocks = numberOfBlocks + 1; 
+      System.out.println("Ooh");
+      }
+  }
+
+  public static MessageForCommunicate encryptMessage(MessageForCommunicate message,RsaKeys rsa){
+	MessageForCommunicate  midMessage = new MessageForCommunicate (message.getNumberOfBlocks());
+
+    int i;
+    for(i = 0;i < message.getNumberOfBlocks();i++)
+    {
+    	midMessage.BigintegerBlocks[i] = encryptBlocks(message.BigintegerBlocks[i],rsa);
     }
-    return numberOfBlocks;
-  }
-  
-  public static String cutoutBlocksFromMessage(int start, int end, String message)
+    MessageForCommunicate outputMessage = new MessageForCommunicate(midMessage.BigintegerBlocks);
+    return outputMessage; 
+  } 
+
+  public static BigInteger encryptBlocks(BigInteger blocks, RsaKeys rsa)
   {
-    String blocks;
-    blocks =  message.substring(start, end);
-    return blocks;
-  }
-  
-  public static BigInteger transformLongToBigInteger(long inputNumber)
-  {
-    BigInteger outputNumber = BigInteger.valueOf(inputNumber);
-    return outputNumber;
-  }
-  
-  public static long transformStringToLong(String inputString)
-  {
-    long outputNumber =  Long.parseLong(inputString);
-    return outputNumber;
+	  BigInteger outputNumber = encryptAlgorithm(blocks, rsa);
+	  return outputNumber;
   }
 	   
-  public static BigInteger encryptAlgorithm(BigInteger message, Rsa rsa){ 
+  public static BigInteger encryptAlgorithm(BigInteger messageNumber, RsaKeys rsa){ 
     //  c = m^e mod n
     BigInteger outputNumber = BigInteger.ZERO;  
-    
-    outputNumber = message.pow(rsa.publicKeyE.intValue()).mod(rsa.publicKeyN);    
+    outputNumber = messageNumber.pow(rsa.publicKeyE.intValue()).mod(rsa.publicKeyN);    
     return outputNumber;	  
   } 
 	  
-  public BigInteger decryptMessage (BigInteger m, Rsa rsa){ 	  
-    BigInteger encrypedMessage = BigInteger.ZERO;  
-
-    return encrypedMessage;	  
-  } 
+  public static MessageForCommunicate decryptMessage (MessageForCommunicate message, RsaKeys rsa){ 	  
+    String[] decryptedBlocks = new String[message.getNumberOfBlocks()];
+    MessageForCommunicate midMsf = new MessageForCommunicate(message.getNumberOfBlocks());
     
-  private BigInteger recoverMessageFromBlocks(BigInteger[] inputBlocks){
-    BigInteger message = BigInteger.ZERO; 
-	  
-    return message;	  
-  }
+    int i;
+    for(i=0 ; i < message.getNumberOfBlocks() ; i++)
+    {
+      midMsf.BigintegerBlocks[i] =  decryptAlgorithm(message.BigintegerBlocks[i],rsa);
+    }
+    MessageForCommunicate decryptedMessage = new MessageForCommunicate(midMsf.BigintegerBlocks);
+    return decryptedMessage;	  
+  } 
   
-  public BigInteger decryptAlgorithm(BigInteger m, Rsa rsa ){ 	
-	//  m = c^d mod n
+  public static BigInteger decryptAlgorithm(BigInteger numberC, RsaKeys rsa ){ 	
+	// m = c^d mod n
     BigInteger outputNumber = BigInteger.ZERO;  
-    outputNumber = m.pow(rsa.privateKeyD.intValue()).mod(rsa.publicKeyN);
-      
+    outputNumber = numberC.pow(rsa.privateKeyD.intValue()).mod(rsa.publicKeyN);
     return outputNumber;	  	  
   } 
 		 
