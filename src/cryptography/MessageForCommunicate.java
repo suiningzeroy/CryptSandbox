@@ -3,7 +3,7 @@ package cryptography;
 import java.math.BigInteger;
 
 public class MessageForCommunicate {
-  private int NumberOfBitsPerBlock = 3;
+  private int NumberOfCharsPerBlock = 3;
   private int NumberOfBlocks;
   public String MessageString = new String();
   public String[] Blocks;
@@ -42,11 +42,11 @@ public class MessageForCommunicate {
   }
   
   public void setNumberOfBitsPerBlocks(int numbers){
-    this.NumberOfBitsPerBlock = numbers;
+    this.NumberOfCharsPerBlock = numbers;
   }
   
   public int getNumberOfBitsPerBlocks(){
-    int number = this.NumberOfBitsPerBlock;
+    int number = this.NumberOfCharsPerBlock;
     return number;
   }
   
@@ -64,8 +64,8 @@ public class MessageForCommunicate {
   } 
   public int generateNumberOfBlocks(String Message)
   {
-    int numberOfBlocks = Message.length() / NumberOfBitsPerBlock;
-    int remainder = Message.length() % NumberOfBitsPerBlock;
+    int numberOfBlocks = Message.length() / NumberOfCharsPerBlock;
+    int remainder = Message.length() % NumberOfCharsPerBlock;
     
     if(remainder == 0){
     }
@@ -77,18 +77,15 @@ public class MessageForCommunicate {
   private String [] splitMessageIntoBlocks(String message){  
     int endOfMessage = message.length();
     String stringGroup[] = new String[NumberOfBlocks];
-    //BigInteger bigIntegerGroup[] = new BigInteger[NumberOfBlocks];
 
     int j = 0,startPoint;
     for(j = 0; j < NumberOfBlocks ; j++){
       startPoint = j*3;
       if(j == NumberOfBlocks-1){
         stringGroup[j] = cutOutBlocksFromMessage(startPoint,endOfMessage,message);
-       // bigIntegerGroup[j] = transformStringToBigInteger(stringGroup[j]);
       }
       else{
         stringGroup[j] = cutOutBlocksFromMessage(startPoint, startPoint+3,message);
-       // bigIntegerGroup[j] = transformStringToBigInteger(stringGroup[j]);
       }
     }
     return stringGroup;  
@@ -169,7 +166,7 @@ public class MessageForCommunicate {
   }
   public boolean isBlocksShorterThanSystemDefined(String blocks)
   {
-    if(blocks.length() < this.NumberOfBitsPerBlock){
+    if(blocks.length() < this.NumberOfCharsPerBlock){
       return true;
     }
     else{
@@ -179,13 +176,13 @@ public class MessageForCommunicate {
 
   public String addZeroToShortBlocksOnLeft(String blocks){
     int numberOfZeroShouldAdd = 0;
-    numberOfZeroShouldAdd = this.NumberOfBitsPerBlock - blocks.length();
+    numberOfZeroShouldAdd = this.NumberOfCharsPerBlock - blocks.length();
     int i = 0;
     for(i = 0; i < numberOfZeroShouldAdd; i++)
     {
       blocks = "0"+blocks;
-      //System.out.println("blocks:"+blocks);
     } 
     return blocks;
   }
+  
 }

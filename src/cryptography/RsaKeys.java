@@ -16,8 +16,8 @@ public class RsaKeys {
   public BigInteger privateKeyD = BigInteger.ZERO;  
   
   public RsaKeys(){
-    this.generatePrimeP(this.BIT_LENGTH_OF_RANDOM_NUMBER);
-    this.generatePrimeQ(this.BIT_LENGTH_OF_RANDOM_NUMBER);
+    this.generatePrimeP(RsaKeys.BIT_LENGTH_OF_RANDOM_NUMBER);
+    this.generatePrimeQ(RsaKeys.BIT_LENGTH_OF_RANDOM_NUMBER);
     this.generatePublicKeyN();
     this.generatePositivePublicKeyE();
     this.generatePrivateKeyD();
@@ -45,7 +45,7 @@ public class RsaKeys {
   
   public void generatePositivePublicKeyE (){
     //relatively prime to (p - 1)(q - 1)
-    BigInteger numberE = this.generateRandomNumber(this.BIT_LENGTH_OF_RANDOM_NUMBER_E);
+    BigInteger numberE = this.generateRandomNumber(RsaKeys.BIT_LENGTH_OF_RANDOM_NUMBER_E);
     BigInteger NUMBERONE = new BigInteger("1");
 
     do{
@@ -78,7 +78,6 @@ public class RsaKeys {
   public BigInteger generateRandomNumber (int bitlengthofRandomNumber){
     Random rdm = new java.util.Random();	 
     BigInteger RandomNumber = new BigInteger(bitlengthofRandomNumber,10,rdm);
-	
     return RandomNumber;
   }
   
@@ -90,7 +89,6 @@ public class RsaKeys {
     do{
       generatePositivePublicKeyE ();
       this.privateKeyD = this.extendedEuclideanAlgorithm(numberZ, this.publicKeyE);
-      
     }while(isNegativeNumber(privateKeyD));
   }
   

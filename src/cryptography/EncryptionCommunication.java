@@ -8,11 +8,12 @@ import cryptography.RsaKeys;
 public class EncryptionCommunication {
 
   public static void main(String[] args){
-    EncryptionCommunication ecomm = new EncryptionCommunication();
-    MessageForCommunicate MessageForEncrypt = new MessageForCommunicate("488262687");
+    MessageForCommunicate MessageForEncrypt = new MessageForCommunicate("488262687011");
     MessageForCommunicate EncryptedMessage = new MessageForCommunicate(MessageForEncrypt.getNumberOfBlocks());
     MessageForCommunicate DecryptedMessage = new MessageForCommunicate(MessageForEncrypt.getNumberOfBlocks());
     RsaKeys rsa = new RsaKeys();
+    System.out.println("rsa-p:" + rsa.primeP);
+    System.out.println("rsa-q:" + rsa.primeQ);
     System.out.println("rsa-E:" + rsa.publicKeyE);
     System.out.println("rsa-N:" + rsa.publicKeyN);
     System.out.println("rsa-D:" + rsa.privateKeyD);
@@ -21,13 +22,13 @@ public class EncryptionCommunication {
     DecryptedMessage = EncryptionCommunication.decryptMessage(EncryptedMessage, rsa);
 
     System.out.println("MessageForEncrypt:"+ MessageForEncrypt.getMessage());
-    System.out.println("DecryptedMessage:"+ DecryptedMessage.getMessage());
+    System.out.println("DecryptedMessage :"+ DecryptedMessage.getMessage());
     if(MessageForEncrypt.getMessage().intern()==DecryptedMessage.getMessage().intern()){
       System.out.println("Ok");
-      }
+    }
     else{
       System.out.println("Ooh");
-      }
+    }
   }
 
   public static MessageForCommunicate encryptMessage(MessageForCommunicate message,RsaKeys rsa){
@@ -44,8 +45,8 @@ public class EncryptionCommunication {
 
   public static BigInteger encryptBlocks(BigInteger blocks, RsaKeys rsa)
   {
-	  BigInteger outputNumber = encryptAlgorithm(blocks, rsa);
-	  return outputNumber;
+    BigInteger outputNumber = encryptAlgorithm(blocks, rsa);
+    return outputNumber;
   }
 	   
   public static BigInteger encryptAlgorithm(BigInteger messageNumber, RsaKeys rsa){ 
@@ -55,8 +56,7 @@ public class EncryptionCommunication {
     return outputNumber;	  
   } 
 	  
-  public static MessageForCommunicate decryptMessage (MessageForCommunicate message, RsaKeys rsa){ 	  
-    String[] decryptedBlocks = new String[message.getNumberOfBlocks()];
+  public static MessageForCommunicate decryptMessage (MessageForCommunicate message, RsaKeys rsa){
     MessageForCommunicate midMsf = new MessageForCommunicate(message.getNumberOfBlocks());
     
     int i;
