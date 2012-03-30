@@ -34,38 +34,32 @@ public class TestEncryptionCommunication {
     assertEquals(expResultMFC, result);	
   }
   
-
   @Test(timeout = 5000)  
-  public void testDecryptAlgorithm(){
+  public void testDecryptAlgorithm() {
     BigInteger testMessage = BigInteger.ZERO;
     BigInteger expResult = new BigInteger("12345");
     
-    EncryptionCommunication ecomm = new EncryptionCommunication();
     RsaKeys rsa = new RsaKeys();
     testMessage = EncryptionCommunication.encryptAlgorithm(expResult, rsa);
-    
-
-    //rsa.testRsa();
     System.out.println("n:" + rsa.publicKeyN);
     System.out.println("e:" + rsa.publicKeyE);
     System.out.println("d:" + rsa.privateKeyD);
     System.out.println("testMessage:" + testMessage);
-    //System.out.println("result:" + ecomm.decryptAlgorithm(testMessage, rsa));
-
     assertEquals(expResult, EncryptionCommunication.decryptAlgorithm(testMessage, rsa));
   }
+  
   @Test
-  public void testEncryptAlgorithm(){	  
+  public void testEncryptAlgorithm() {	  
     BigInteger testMessage = new BigInteger("688"); 
     BigInteger expResult = new BigInteger("1570");
     RsaKeys rsa = new RsaKeys();
     rsa.testRsa();
-  
     assertEquals(expResult, EncryptionCommunication.encryptAlgorithm(testMessage, rsa));
   }
+  
   @Ignore
   @Test
-  public void testDecryptMessage(){
+  public void testDecryptMessage() {
     EncryptionCommunication ecomm = new EncryptionCommunication();
     RsaKeys rsa = new RsaKeys();
     rsa.testRsa();
@@ -78,7 +72,6 @@ public class TestEncryptionCommunication {
     encryptBlocks[4] = new String("2423");
     encryptBlocks[5] = new String("158");
     MessageForCommunicate testMessage = new MessageForCommunicate(encryptBlocks);
-    
     MessageForCommunicate result = EncryptionCommunication.decryptMessage(testMessage, rsa);
     assertEquals(expResult,result);
     
