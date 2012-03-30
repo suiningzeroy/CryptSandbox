@@ -15,7 +15,7 @@ public class RsaKeys {
   public BigInteger publicKeyE = BigInteger.ZERO;  
   public BigInteger privateKeyD = BigInteger.ZERO;  
   
-  public RsaKeys(){
+  public RsaKeys() {
     this.generatePrimeP(RsaKeys.BIT_LENGTH_OF_RANDOM_NUMBER);
     this.generatePrimeQ(RsaKeys.BIT_LENGTH_OF_RANDOM_NUMBER);
     this.generatePublicKeyN();
@@ -23,27 +23,27 @@ public class RsaKeys {
     this.generatePrivateKeyD();
   }
   
-  public  void testRsa(){ 
+  public  void testRsa() { 
 	  // method for test,will be deleted.
     this.publicKeyN = new BigInteger("3337"); 
     this.privateKeyD = new BigInteger("1019"); 
     this.publicKeyE = new BigInteger("79"); 
   }
   
-  public void generatePrimeP (int bitlengthofRandomNumber){
+  public void generatePrimeP (int bitlengthofRandomNumber) {
     primeP = this.generateLargePrime(BIT_LENGTH_OF_RANDOM_NUMBER);	 
   }
 
-  public void generatePrimeQ(int bitlengthofRandomNumber){
+  public void generatePrimeQ(int bitlengthofRandomNumber) {
     primeQ = this.generateLargePrime(BIT_LENGTH_OF_RANDOM_NUMBER);
   }
   
-  public void generatePublicKeyN (){	 
+  public void generatePublicKeyN () {	 
     // n =pq;
     this.publicKeyN = this.primeP.multiply(this.primeQ);
   }
   
-  public void generatePositivePublicKeyE (){
+  public void generatePositivePublicKeyE () {
     //relatively prime to (p - 1)(q - 1)
     BigInteger numberE = this.generateRandomNumber(RsaKeys.BIT_LENGTH_OF_RANDOM_NUMBER_E);
     BigInteger NUMBERONE = new BigInteger("1");
@@ -55,7 +55,7 @@ public class RsaKeys {
     this.publicKeyE = numberE;
   }
   
-  public BigInteger doEuclideanAlgorithm(BigInteger bigNmberA,BigInteger bigNumberB){	  
+  public BigInteger doEuclideanAlgorithm(BigInteger bigNmberA,BigInteger bigNumberB) {	  
     BigInteger remainder ;
     BigInteger numberA =  bigNmberA;
     BigInteger numberB =  bigNumberB;
@@ -68,20 +68,20 @@ public class RsaKeys {
     return numberA;	  
   }
   
-  public BigInteger generateLargePrime (int bitlengthofRandomNumber){
+  public BigInteger generateLargePrime (int bitlengthofRandomNumber) {
     Random rdm = new java.util.Random();	 
     BigInteger	RandomNumber = new BigInteger(bitlengthofRandomNumber,10,rdm);	
     BigInteger largePrime = RandomNumber.nextProbablePrime();
     return largePrime;
   }
   
-  public BigInteger generateRandomNumber (int bitlengthofRandomNumber){
+  public BigInteger generateRandomNumber (int bitlengthofRandomNumber) {
     Random rdm = new java.util.Random();	 
     BigInteger RandomNumber = new BigInteger(bitlengthofRandomNumber,10,rdm);
     return RandomNumber;
   }
   
-  public void generatePrivateKeyD (){
+  public void generatePrivateKeyD () {
 	  //d  e^-1 mod ((p - 1)(q - 1))
     BigInteger numberZ; //numberZ = (p - 1)(q - 1)
     numberZ = this.primeP.subtract(NUMBER_ONE).multiply(primeQ.subtract(NUMBER_ONE));
@@ -92,8 +92,7 @@ public class RsaKeys {
     }while(isNegativeNumber(privateKeyD));
   }
   
-  public boolean isNegativeNumber(BigInteger inputNumber)
-  {
+  public boolean isNegativeNumber(BigInteger inputNumber) {
     if(inputNumber.abs() == inputNumber){
       return false;
     }
@@ -102,7 +101,7 @@ public class RsaKeys {
     }
   }
   
-  public BigInteger extendedEuclideanAlgorithm(BigInteger bigNmberM,BigInteger bigNumberE){
+  public BigInteger extendedEuclideanAlgorithm(BigInteger bigNmberM,BigInteger bigNumberE) {
     BigInteger firstOfNumberGroupOne,secondOfNumberGroupOne,thirdOfNumberGroupOne;
     BigInteger firstOfNumberGroupTwo,secondOfNumberGroupTwo,thirdOfNumberGroupTwo;
     BigInteger firstOfNumberGroupThree,secondNumberOfTestGroupThree,thirdOfNumberGroupThree;
@@ -116,7 +115,6 @@ public class RsaKeys {
     firstOfNumberGroupTwo = new BigInteger("0");
     thirdOfNumberGroupOne = (bigNmberM.compareTo(bigNumberE) == 1)?bigNmberM:bigNumberE;
     thirdOfNumberGroupTwo = (bigNmberM.compareTo(bigNumberE) == 1)?bigNumberE:bigNmberM;
-    
     while( flagTrue ){
       if(thirdOfNumberGroupTwo.equals(NUMBER_ZERO)){
         inverseNumber = thirdOfNumberGroupOne; // gcd(bigNmberN,bigNmberE) != 1

@@ -7,7 +7,7 @@ import cryptography.RsaKeys;
 
 public class EncryptionCommunication {
 
-  public static void main(String[] args){
+  public static void main(String[] args) {
     MessageForCommunicate MessageForEncrypt = new MessageForCommunicate("488262687011");
     MessageForCommunicate EncryptedMessage = new MessageForCommunicate(MessageForEncrypt.getNumberOfBlocks());
     MessageForCommunicate DecryptedMessage = new MessageForCommunicate(MessageForEncrypt.getNumberOfBlocks());
@@ -31,8 +31,8 @@ public class EncryptionCommunication {
     }
   }
 
-  public static MessageForCommunicate encryptMessage(MessageForCommunicate message,RsaKeys rsa){
-	MessageForCommunicate  midMessage = new MessageForCommunicate (message.getNumberOfBlocks());
+  public static MessageForCommunicate encryptMessage(MessageForCommunicate message,RsaKeys rsa) {
+    MessageForCommunicate  midMessage = new MessageForCommunicate (message.getNumberOfBlocks());
 
     int i;
     for(i = 0;i < message.getNumberOfBlocks();i++)
@@ -43,13 +43,12 @@ public class EncryptionCommunication {
     return outputMessage; 
   } 
 
-  public static BigInteger encryptBlocks(BigInteger blocks, RsaKeys rsa)
-  {
+  public static BigInteger encryptBlocks(BigInteger blocks, RsaKeys rsa) {
     BigInteger outputNumber = encryptAlgorithm(blocks, rsa);
     return outputNumber;
   }
 	   
-  public static BigInteger encryptAlgorithm(BigInteger messageNumber, RsaKeys rsa){ 
+  public static BigInteger encryptAlgorithm(BigInteger messageNumber, RsaKeys rsa) { 
     //  c = m^e mod n
     BigInteger outputNumber = BigInteger.ZERO;  
     outputNumber = messageNumber.pow(rsa.publicKeyE.intValue()).mod(rsa.publicKeyN);    
@@ -68,7 +67,7 @@ public class EncryptionCommunication {
     return decryptedMessage;	  
   } 
   
-  public static BigInteger decryptAlgorithm(BigInteger numberC, RsaKeys rsa ){ 	
+  public static BigInteger decryptAlgorithm(BigInteger numberC, RsaKeys rsa ) { 	
 	// m = c^d mod n
     BigInteger outputNumber = BigInteger.ZERO;  
     outputNumber = numberC.pow(rsa.privateKeyD.intValue()).mod(rsa.publicKeyN);

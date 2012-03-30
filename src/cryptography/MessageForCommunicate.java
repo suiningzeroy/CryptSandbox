@@ -9,13 +9,14 @@ public class MessageForCommunicate {
   public String[] Blocks;
   public BigInteger[] BigintegerBlocks;
 
-  public MessageForCommunicate(int number){
+  public MessageForCommunicate(int number) {
     this.setNumberOfBlocks(number);
     Blocks = new String[NumberOfBlocks];
     BigintegerBlocks = new BigInteger[NumberOfBlocks];
     this.MessageString = "";
   }
-  public MessageForCommunicate(String Message){
+  
+  public MessageForCommunicate(String Message) {
     this.MessageString = Message;
     NumberOfBlocks = generateNumberOfBlocks(Message);
     Blocks = new String[NumberOfBlocks];
@@ -24,7 +25,7 @@ public class MessageForCommunicate {
     BigintegerBlocks = this.transformStringBlocksToBigIntegerBlocks(Blocks);
   }
   
-  public MessageForCommunicate(String[] blocks){
+  public MessageForCommunicate(String[] blocks) {
     Blocks = blocks;
     NumberOfBlocks = blocks.length;
     this.MessageString = this.recoverMessageFromBlocks(blocks);
@@ -32,7 +33,7 @@ public class MessageForCommunicate {
     BigintegerBlocks = this.transformStringBlocksToBigIntegerBlocks(Blocks);
   }
   
-  public MessageForCommunicate(BigInteger[] blocksOfBigInteger){
+  public MessageForCommunicate(BigInteger[] blocksOfBigInteger) {
     NumberOfBlocks = blocksOfBigInteger.length;
     BigintegerBlocks = new BigInteger[NumberOfBlocks];
     BigintegerBlocks = blocksOfBigInteger; 
@@ -41,29 +42,26 @@ public class MessageForCommunicate {
     this.MessageString = this.recoverMessageFromBlocks(Blocks);
   }
   
-  public void setNumberOfBitsPerBlocks(int numbers){
+  public void setNumberOfBitsPerBlocks(int numbers) {
     this.NumberOfCharsPerBlock = numbers;
   }
   
-  public int getNumberOfBitsPerBlocks(){
-    int number = this.NumberOfCharsPerBlock;
-    return number;
+  public int getNumberOfBitsPerBlocks() {
+    return this.NumberOfCharsPerBlock;
   }
   
-  public String getMessage(){
-  String message = this.MessageString;
-    return message;
+  public String getMessage() {
+    return this.MessageString;
   }
-  public void setNumberOfBlocks(int numbers){
+  public void setNumberOfBlocks(int numbers) {
   this.NumberOfBlocks = numbers;
   }
   
-  public int getNumberOfBlocks(){
-    int number = this.NumberOfBlocks;
-    return number;
+  public int getNumberOfBlocks() {
+    return this.NumberOfBlocks;
   } 
-  public int generateNumberOfBlocks(String Message)
-  {
+  
+  public int generateNumberOfBlocks(String Message) {
     int numberOfBlocks = Message.length() / NumberOfCharsPerBlock;
     int remainder = Message.length() % NumberOfCharsPerBlock;
     
@@ -74,7 +72,7 @@ public class MessageForCommunicate {
     return numberOfBlocks;
   }
   
-  private String [] splitMessageIntoBlocks(String message){  
+  private String [] splitMessageIntoBlocks(String message) {  
     int endOfMessage = message.length();
     String stringGroup[] = new String[NumberOfBlocks];
 
@@ -91,13 +89,12 @@ public class MessageForCommunicate {
     return stringGroup;  
   }
   
-  public String cutOutBlocksFromMessage(int start, int end, String message)
-  {
+  public String cutOutBlocksFromMessage(int start, int end, String message) {
     String blocks;
     blocks =  message.substring(start, end);
     return blocks;
   }
-  public String[] transformBigIntegerBlocksToStringBlocks(BigInteger[] inputBigIntegerBlocks){
+  public String[] transformBigIntegerBlocksToStringBlocks(BigInteger[] inputBigIntegerBlocks) {
     int lengthOfBlocks = inputBigIntegerBlocks.length;
     String[] outputStringBlocks = new String[lengthOfBlocks];
     int i = 0;
@@ -107,7 +104,7 @@ public class MessageForCommunicate {
     return outputStringBlocks;
   }
   
-  public BigInteger[] transformStringBlocksToBigIntegerBlocks(String[] inputStringBlocks){
+  public BigInteger[] transformStringBlocksToBigIntegerBlocks(String[] inputStringBlocks) {
     int lengthOfBlocks = inputStringBlocks.length;
     BigInteger[] outputBigIntegerBlocks = new BigInteger[lengthOfBlocks];
     int i = 0;
@@ -116,26 +113,23 @@ public class MessageForCommunicate {
     }
     return outputBigIntegerBlocks;
   }
-  public  BigInteger transformStringToBigInteger(String inputString){
+  public  BigInteger transformStringToBigInteger(String inputString) {
     long midLongNumber =  transformStringToLong(inputString);
     BigInteger outputNumber = transformLongToBigInteger(midLongNumber);
     return outputNumber;
   }
 
-  public  BigInteger transformLongToBigInteger(long inputNumber)
-  {
+  public  BigInteger transformLongToBigInteger(long inputNumber) {
     BigInteger outputNumber = BigInteger.valueOf(inputNumber);
     return outputNumber;
   }
   
-  public  long transformStringToLong(String inputString)
-  {
+  public  long transformStringToLong(String inputString) {
     long outputNumber =  Long.parseLong(inputString);
     return outputNumber;
   }
   
-  public  String transformBigIntegerToString(BigInteger inputNumber)
-  {
+  public  String transformBigIntegerToString(BigInteger inputNumber) {
     String outputString =  inputNumber.toString();
     return outputString;
   }
@@ -150,7 +144,8 @@ public class MessageForCommunicate {
     }   
     return message;  
   }
-  public  String fillBlocks(String inputBlocks){
+  
+  public  String fillBlocks(String inputBlocks) {
     String filledBlocks = new String();
     if(isBlocksShorterThanSystemDefined(inputBlocks)){
       filledBlocks = addZeroToShortBlocksOnLeft(inputBlocks);
@@ -160,12 +155,13 @@ public class MessageForCommunicate {
     }
     return filledBlocks;
   }
-  public String addBlockToMessage(String message, String block){
+  
+  public String addBlockToMessage(String message, String block) {
   message = message + block;
   return message;
   }
-  public boolean isBlocksShorterThanSystemDefined(String blocks)
-  {
+  
+  public boolean isBlocksShorterThanSystemDefined(String blocks) {
     if(blocks.length() < this.NumberOfCharsPerBlock){
       return true;
     }
@@ -174,7 +170,7 @@ public class MessageForCommunicate {
     }
   };
 
-  public String addZeroToShortBlocksOnLeft(String blocks){
+  public String addZeroToShortBlocksOnLeft(String blocks) {
     int numberOfZeroShouldAdd = 0;
     numberOfZeroShouldAdd = this.NumberOfCharsPerBlock - blocks.length();
     int i = 0;
