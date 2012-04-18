@@ -2,14 +2,14 @@ package cryptography;
 
 import java.math.BigInteger;
 
-public class MessageForCommunicate {
+public class MessageForCommunication {
   private int NumberOfCharsPerBlock = 3;
   private int NumberOfBlocks;
   public String MessageString = new String();
   public String[] Blocks;
   public BigInteger[] BigintegerBlocks;
   
-  public MessageForCommunicate() {
+  public MessageForCommunication() {
   }
   
   public void initializeMessageWithIntegerNumber(int number) {

@@ -4,24 +4,24 @@ import static org.junit.Assert.*;
 
 import java.math.BigInteger;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
-import cryptography.EncryptionCommunication;
-import cryptography.MessageForCommunicate;
+import cryptography.MessageForCommunication;
 
 public class testMessageForCommunicate {
   @Test
   public void testGenerateNumberOfBlocks() {
-    MessageForCommunicate mfc = new MessageForCommunicate("6882326879666680032");
+    MessageForCommunication mfc = new MessageForCommunication();
+    mfc.initializeMessageWithString("6882326879666680032");
     int expResult = 7;
-    int result = mfc.generateNumberOfBlocks(mfc.getMessage());
+    int result = mfc.computeNumberOfBlocks(mfc.getMessage());
     assertEquals(expResult,result);
   }
   
   @Test
   public void testSplitMessageIntoBlocks() {
-    MessageForCommunicate testMessage = new MessageForCommunicate("688232687966668003");
+    MessageForCommunication testMessage = new MessageForCommunication();
+    testMessage.initializeMessageWithString("688232687966668003");
     String[] result = new String[testMessage.getNumberOfBlocks()];
     String[] expResult = new String[testMessage.getNumberOfBlocks()];
 
@@ -36,46 +36,17 @@ public class testMessageForCommunicate {
   }
   
   @Test
-  public void testCutOutBlocksFromMessage() {
-    MessageForCommunicate mfc = new MessageForCommunicate("688232687966668003");
-    String expResult = "268";
-    String result = mfc.cutOutBlocksFromMessage(5,8, mfc.getMessage());
-    assertEquals(expResult,result);
-  }
-  
-  @Test
   public void testTransformStringToBigInteger() {
-    MessageForCommunicate mfc = new MessageForCommunicate("688232687966668003");
+    MessageForCommunication mfc = new MessageForCommunication();
+    mfc.initializeMessageWithString("688232687966668003");
     BigInteger expResult = new BigInteger("688232687966668003");
     assertEquals(expResult,mfc.transformStringToBigInteger(mfc.getMessage()));
-  }
-  
-  @Test
-  public void testTransformLongToBigInteger() {
-    MessageForCommunicate mfc = new MessageForCommunicate("688232687966668003");
-    BigInteger expResult = new BigInteger("688232687966668003");
-    long longNumber = Long.parseLong(mfc.getMessage());
-    assertEquals(expResult,mfc.transformLongToBigInteger(longNumber));
-  }
-  
-  @Test
-  public void testTransformStringToLong() {
-    MessageForCommunicate mfc = new MessageForCommunicate("68823268");
-    long expResult = 68823268;
-    assertEquals(expResult,mfc.transformStringToLong(mfc.getMessage()));
-  }
-  
-  @Test
-  public void testTransformBigIntegerToString() {
-    MessageForCommunicate mfc = new MessageForCommunicate("688232687966668003");
-    BigInteger testNumber = new BigInteger("688232687966668003");
-    String expResult = new String("688232687966668003");
-    assertEquals(expResult,mfc.transformBigIntegerToString(testNumber));
   }
 
 @Test
   public void testTransformBigIntegerBlocksToStringBlocks() {
-     MessageForCommunicate mfc = new MessageForCommunicate("688232687966668300");
+     MessageForCommunication mfc = new MessageForCommunication();
+     mfc.initializeMessageWithString("688232687966668300");
      BigInteger[] testBlocks = new BigInteger[6];
      testBlocks[0] = new BigInteger("688");
      testBlocks[1] = new BigInteger("232");
@@ -90,7 +61,8 @@ public class testMessageForCommunicate {
 
   @Test
   public void testTransformStringBlocksToBigIntegerBlocks() {
-    MessageForCommunicate mfc = new MessageForCommunicate("688232687966668300");
+    MessageForCommunication mfc = new MessageForCommunication();
+    mfc.initializeMessageWithString("688232687966668300");
     BigInteger[] expResult = new BigInteger[6];
     expResult[0] = new BigInteger("688");
     expResult[1] = new BigInteger("232");
@@ -105,7 +77,8 @@ public class testMessageForCommunicate {
   
   @Test
   public void testRecoverMessageFromBlocks() {
-    MessageForCommunicate mfc = new MessageForCommunicate("688232687966668003");
+    MessageForCommunication mfc = new MessageForCommunication();
+    mfc.initializeMessageWithString("688232687966668003");
     String[] testBlocks = new String[6];
     testBlocks[0] = "688";
     testBlocks[1] = new String("232");
@@ -114,21 +87,23 @@ public class testMessageForCommunicate {
     testBlocks[4] = new String("668");
     testBlocks[5] = new String("003");
     String expResult = mfc.getMessage();
-    String result = mfc.recoverMessageFromBlocks(testBlocks);
+    String result = mfc.rebuildMessageFromBlocks(testBlocks);
     assertEquals(expResult,result);
   }
   
   @Test
   public void testFillBlocks() {
-    MessageForCommunicate mfc = new MessageForCommunicate("23");
+    MessageForCommunication mfc = new MessageForCommunication();
+    mfc.initializeMessageWithString("23");
     String expResult = new String("023");
-    String result = mfc.fillBlocks(mfc.getMessage());
+    String result = mfc.completeBlocks(mfc.getMessage());
     assertEquals(expResult,result);
   }
   
   @Test
   public void testIsBlocksShorterThanSystemDefined() {
-    MessageForCommunicate mfc = new MessageForCommunicate("3");
+    MessageForCommunication mfc = new MessageForCommunication();
+    mfc.initializeMessageWithString("3");
     boolean expResult = true;
     boolean result = mfc.isBlocksShorterThanSystemDefined(mfc.getMessage());
     assertEquals(expResult,result);
@@ -136,7 +111,8 @@ public class testMessageForCommunicate {
   
   @Test
   public void testAddZeroToShortBlocks() {
-    MessageForCommunicate mfc = new MessageForCommunicate("3");
+    MessageForCommunication mfc = new MessageForCommunication();
+    mfc.initializeMessageWithString("3");
     String expResult = "003";
     String result = mfc.addZeroToShortBlocksOnLeft(mfc.getMessage());
     assertEquals(expResult,result);

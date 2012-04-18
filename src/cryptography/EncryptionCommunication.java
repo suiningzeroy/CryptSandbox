@@ -1,16 +1,20 @@
 package cryptography;
 
 import java.math.*;
-import cryptography.MessageForCommunicate;
+import cryptography.MessageForCommunication;
 
 import cryptography.RsaKeys;
 
 public class EncryptionCommunication {
 
   public static void main(String[] args) {
-    MessageForCommunicate MessageForEncrypt = new MessageForCommunicate("488262687011");
-    MessageForCommunicate EncryptedMessage = new MessageForCommunicate(MessageForEncrypt.getNumberOfBlocks());
-    MessageForCommunicate DecryptedMessage = new MessageForCommunicate(MessageForEncrypt.getNumberOfBlocks());
+    EncryptionCommunication ec = new EncryptionCommunication();
+    MessageForCommunication MessageForEncrypt = new MessageForCommunication();
+    MessageForEncrypt.initializeMessageWithString("488262687011");
+    MessageForCommunication EncryptedMessage = new MessageForCommunication();
+    EncryptedMessage.initializeMessageWithIntegerNumber(MessageForEncrypt.getNumberOfBlocks());
+    MessageForCommunication DecryptedMessage = new MessageForCommunication();
+    DecryptedMessage.initializeMessageWithIntegerNumber(MessageForEncrypt.getNumberOfBlocks());
     RsaKeys rsa = new RsaKeys();
     System.out.println("rsa-p:" + rsa.primeP);
     System.out.println("rsa-q:" + rsa.primeQ);
@@ -18,8 +22,8 @@ public class EncryptionCommunication {
     System.out.println("rsa-N:" + rsa.publicKeyN);
     System.out.println("rsa-D:" + rsa.privateKeyD);
 
-    EncryptedMessage = EncryptionCommunication.encryptMessage(MessageForEncrypt,rsa);
-    DecryptedMessage = EncryptionCommunication.decryptMessage(EncryptedMessage, rsa);
+    EncryptedMessage = ec.encryptMessage(MessageForEncrypt,rsa);
+    DecryptedMessage = ec.decryptMessage(EncryptedMessage, rsa);
 
     System.out.println("MessageForEncrypt:"+ MessageForEncrypt.getMessage());
     System.out.println("DecryptedMessage :"+ DecryptedMessage.getMessage());
@@ -31,43 +35,47 @@ public class EncryptionCommunication {
     }
   }
 
-  public static MessageForCommunicate encryptMessage(MessageForCommunicate message,RsaKeys rsa) {
-    MessageForCommunicate  midMessage = new MessageForCommunicate (message.getNumberOfBlocks());
+  public MessageForCommunication encryptMessage(MessageForCommunication message,RsaKeys rsa) {
+    MessageForCommunication  midMessage = new MessageForCommunication ();
+    midMessage.initializeMessageWithIntegerNumber(message.getNumberOfBlocks());
 
     int i;
     for(i = 0;i < message.getNumberOfBlocks();i++)
     {
     	midMessage.BigintegerBlocks[i] = encryptBlocks(message.BigintegerBlocks[i],rsa);
     }
-    MessageForCommunicate outputMessage = new MessageForCommunicate(midMessage.BigintegerBlocks);
+    MessageForCommunication outputMessage = new MessageForCommunication();
+    outputMessage.initializeMessageWithBigintegerArray(midMessage.BigintegerBlocks);
     return outputMessage; 
   } 
 
-  public static BigInteger encryptBlocks(BigInteger blocks, RsaKeys rsa) {
+  public BigInteger encryptBlocks(BigInteger blocks, RsaKeys rsa) {
     BigInteger outputNumber = encryptAlgorithm(blocks, rsa);
     return outputNumber;
   }
 	   
-  public static BigInteger encryptAlgorithm(BigInteger messageNumber, RsaKeys rsa) { 
+  public BigInteger encryptAlgorithm(BigInteger messageNumber, RsaKeys rsa) { 
     //  c = m^e mod n
     BigInteger outputNumber = BigInteger.ZERO;  
     outputNumber = messageNumber.pow(rsa.publicKeyE.intValue()).mod(rsa.publicKeyN);    
     return outputNumber;	  
   } 
 	  
-  public static MessageForCommunicate decryptMessage (MessageForCommunicate message, RsaKeys rsa){
-    MessageForCommunicate midMsf = new MessageForCommunicate(message.getNumberOfBlocks());
+  public MessageForCommunication decryptMessage(MessageForCommunication message, RsaKeys rsa) {
+    MessageForCommunication midMessage = new MessageForCommunication();
+    midMessage.initializeMessageWithIntegerNumber(message.getNumberOfBlocks());
     
     int i;
     for(i=0 ; i < message.getNumberOfBlocks() ; i++)
     {
-      midMsf.BigintegerBlocks[i] =  decryptAlgorithm(message.BigintegerBlocks[i],rsa);
+      midMessage.BigintegerBlocks[i] =  decryptAlgorithm(message.BigintegerBlocks[i],rsa);
     }
-    MessageForCommunicate decryptedMessage = new MessageForCommunicate(midMsf.BigintegerBlocks);
+    MessageForCommunication decryptedMessage = new MessageForCommunication();
+    decryptedMessage.initializeMessageWithBigintegerArray(midMessage.BigintegerBlocks);
     return decryptedMessage;	  
   } 
   
-  public static BigInteger decryptAlgorithm(BigInteger numberC, RsaKeys rsa ) { 	
+  public BigInteger decryptAlgorithm(BigInteger numberC, RsaKeys rsa ) { 	
 	// m = c^d mod n
     BigInteger outputNumber = BigInteger.ZERO;  
     outputNumber = numberC.pow(rsa.privateKeyD.intValue()).mod(rsa.publicKeyN);
