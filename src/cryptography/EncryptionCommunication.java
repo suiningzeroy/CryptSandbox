@@ -16,6 +16,7 @@ public class EncryptionCommunication {
     MessageForCommunication DecryptedMessage = new MessageForCommunication();
     DecryptedMessage.initializeMessageWithIntegerNumber(MessageForEncrypt.getNumberOfBlocks());
     RsaKeys rsa = new RsaKeys();
+    rsa.generateKeySet();
     System.out.println("rsa-p:" + rsa.primeP);
     System.out.println("rsa-q:" + rsa.primeQ);
     System.out.println("rsa-E:" + rsa.publicKeyE);
@@ -25,8 +26,8 @@ public class EncryptionCommunication {
     EncryptedMessage = ec.encryptMessage(MessageForEncrypt,rsa);
     DecryptedMessage = ec.decryptMessage(EncryptedMessage, rsa);
 
-    System.out.println("MessageForEncrypt:"+ MessageForEncrypt.getMessage());
-    System.out.println("DecryptedMessage :"+ DecryptedMessage.getMessage());
+    System.out.println("MessageForEncryption:"+ MessageForEncrypt.getMessage());
+    System.out.println("DecryptedMessage    :"+ DecryptedMessage.getMessage());
     if(MessageForEncrypt.getMessage().intern()==DecryptedMessage.getMessage().intern()){
       System.out.println("Ok");
     }
